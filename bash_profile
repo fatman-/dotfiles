@@ -2,8 +2,6 @@
 unset MAILCHECK
 
 # Useful aliases (updated Nov 2014)
-
-alias cdenerji='cd ~/Developer/Softrade/enerji'
 alias cddev='cd ~/Developer'
 
 alias pgstatus='pg_ctl -D /usr/local/var/postgres status'
@@ -12,8 +10,6 @@ alias pgstop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
 
 alias gulp='gulp --require coffee-script/register'
 alias mocha='mocha --compilers coffee:coffee-script/register --reporter list'
-
-alias glog='git log --graph --name-status --oneline'
 
 # Bash completion
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
@@ -104,3 +100,21 @@ PS1+="\[${grey}\]\$ \[${reset}\]"; # `$` (and reset color)
 export PS1;
 
 # export PS1='\n\[\033[0;37m\]Tesla@\u\[\033[0m\] \[\033[0;33m\]\w\[\033[0m\] \[\033[1;35m\]$(__git_ps1 "(%s)")\[\033[0m\] \n\$ '
+
+# Softrade team functions
+s_developsync() {
+  if [ -d .git ]
+  then
+    branch=$(git symbolic-ref --short -q HEAD)
+    if [ "develop" == $branch ]
+    then
+      echo "Branch is indeed develop"
+      echo "Initializing data update"
+      git pull --rebase origin develop
+    else
+      echo "Danger, you're in the wrong branch: $branch"
+    fi
+  else
+    echo "Illegal operation: You're not in a git repo";
+  fi
+}
