@@ -99,22 +99,71 @@ PS1+="\n";
 PS1+="\[${grey}\]\$ \[${reset}\]"; # `$` (and reset color)
 export PS1;
 
-# export PS1='\n\[\033[0;37m\]Tesla@\u\[\033[0m\] \[\033[0;33m\]\w\[\033[0m\] \[\033[1;35m\]$(__git_ps1 "(%s)")\[\033[0m\] \n\$ '
 
-# Softrade team functions
-s_developsync() {
+# SOFTRADE TEAM COMMANDS
+
+# Update dotfiles
+s_update() {
+  # store work directory
+  dir=$(pwd)
+  # Move to dotfiles repo
+  cd ~/.dotfiles/
+  # Check branch
   if [ -d .git ]
   then
     branch=$(git symbolic-ref --short -q HEAD)
-    if [ "develop" == $branch ]
+    if [ $branch == "master" ]
     then
-      echo "Branch is indeed develop"
-      echo "Initializing data update"
-      git pull --rebase origin develop
+      echo "Initialiting git update of dotfiles"
+      git pull origin master
     else
-      echo "Danger, you're in the wrong branch: $branch"
+      echo "Danger, something's wrong with your dotfiles setup"
     fi
   else
-    echo "Illegal operation: You're not in a git repo";
+    echo "Danger, something's wrong with your dotfiles setup"
+  fi
+  # Move back to work directory
+  cd $dir
+}
+
+# Sync develop with git
+s_gitsync() {
+  if [ -z "$1" ]
+  then
+    echo "No parameter provided: pull/push"
+  elif [ $1 == "pull" ]
+  then
+    if [ -d .git ]
+    then
+      branch=$(git symbolic-ref --short -q HEAD)
+      if [ $branch == "develop" ]
+      then
+        echo "Branch is indeed develop"
+        echo "Initialiting pull"
+        git pull --rebase origin develop
+      else
+        echo "Danger, you're in the wrong branch: $branch"
+      fi
+    else
+      echo "Illegal operation: You're not in a git repo"
+    fi
+  elif [ $1 == "push" ]
+  then
+    if [ -d .git ]
+    then
+      branch=$(git symbolic-ref --short -q HEAD)
+      if [ $branch == "develop" ]
+      then
+        echo "Branch is indeed develop"
+        echo "Initiating push"
+        git push origin develop
+      else
+        echo "Danger, you're in the wrong branch: $branch"
+      fi
+    else
+      echo "Illegal operation: You're not in a git repo"
+    fi
+  else
+    echo "Incorrect command: use pull/push"
   fi
 }
