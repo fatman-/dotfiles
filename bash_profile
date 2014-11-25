@@ -139,7 +139,7 @@ s_gitsync() {
       if [ $branch == "develop" ]
       then
         echo "Branch is indeed develop"
-        echo "Initialiting pull"
+        echo "Initiating pull"
         git pull --rebase origin develop
       else
         echo "Danger, you're in the wrong branch: $branch"
