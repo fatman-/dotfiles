@@ -114,7 +114,7 @@ s_update() {
     branch=$(git symbolic-ref --short -q HEAD)
     if [ $branch == "master" ]
     then
-      echo "Initialiting git update of dotfiles"
+      echo "Initiating git update of dotfiles"
       git pull origin master
     else
       echo "Danger, something's wrong with your dotfiles setup"
