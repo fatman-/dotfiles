@@ -8,7 +8,7 @@ alias pgstatus='pg_ctl -D /usr/local/var/postgres status'
 alias pgstart='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
 alias pgstop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
 
-alias gulp='gulp --require coffee-script/register'
+alias gulpc='gulp --require coffee-script/register'
 alias mocha='mocha --compilers coffee:coffee-script/register --reporter list'
 
 # Bash completion
