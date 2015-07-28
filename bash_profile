@@ -131,7 +131,7 @@ s_gitsync() {
   if [ -z "$1" ]
   then
     echo "No parameter provided: pull/push"
-  elif [ $1 == "pull" ]
+  elif [ $1 == "pull_depricated" ]
   then
     if [ -d .git ]
     then
@@ -147,7 +147,7 @@ s_gitsync() {
     else
       echo "Illegal operation: You're not in a git repo"
     fi
-  elif [ $1 == "push" ]
+  elif [ $1 == "push_depricated" ]
   then
     if [ -d .git ]
     then
@@ -159,6 +159,23 @@ s_gitsync() {
         git push origin develop
       else
         echo "Danger, you're in the wrong branch: $branch"
+      fi
+    else
+      echo "Illegal operation: You're not in a git repo"
+    fi
+  elif [ $1 == "fetch" ]
+  then
+    if [ -d .git ]
+    then
+      branch=$(git symbolic-ref --short -q HEAD)
+      if [ $branch == "develop" ]
+      then
+        echo "Danger, you're in the wrong branch: $branch"
+      else
+        echo "Fetching latest changes from develop"
+        git fetch origin develop:develop
+        echo "Updating $branch with latest changes"
+        git rebase develop
       fi
     else
       echo "Illegal operation: You're not in a git repo"
