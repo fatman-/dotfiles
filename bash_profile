@@ -192,8 +192,15 @@ s_gitsync() {
       then
         echo "Danger, you're in the wrong branch: $branch"
       else
-        echo "Pushing pull request update in $branch"
-        git push origin $branch
+        echo "Please enter the name of the pull request branch:"
+        read pr_branch
+        if [ $pr_branch == $branch ]
+        then
+          echo "Updating pull request in $branch"
+          git push origin $branch --force-with-lease
+        else
+          echo "Danger, you're PR is in the wrong branch"
+        fi
       fi
     else
       echo "Illegal operation: You're not in a git repo"
