@@ -180,7 +180,25 @@ s_gitsync() {
     else
       echo "Illegal operation: You're not in a git repo"
     fi
+  elif [ $1 == "pr_update" ]
+  then
+    if [ -d .git ]
+    then
+      branch=$(git symbolic-ref --short -q HEAD)
+      if [ $branch == "develop" ]
+      then
+        echo "Danger, you're in the wrong branch: $branch"
+      elif [ $branch == "master" ]
+      then
+        echo "Danger, you're in the wrong branch: $branch"
+      else
+        echo "Pushing pull request update in $branch"
+        git push origin $branch
+      fi
+    else
+      echo "Illegal operation: You're not in a git repo"
+    fi
   else
-    echo "Incorrect command: use pull/push"
+    echo "Incorrect command: use pull_depricated/push_depricated/fetch/pr_update"
   fi
 }
