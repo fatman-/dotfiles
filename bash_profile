@@ -130,82 +130,69 @@ s_update() {
 s_gitsync() {
   if [ -z "$1" ]
   then
-    echo "No parameter provided: pull/push"
+    echo "No parameter provided. Options: pull_depricated | push_depricated | fetch | pr_update | latest"
+  elif [ ! -d .git ]
+  then
+    echo "Illegal operation: You're not in a git repo"
   elif [ $1 == "pull_depricated" ]
   then
-    if [ -d .git ]
+    branch=$(git symbolic-ref --short -q HEAD)
+    if [ $branch == "develop" ]
     then
-      branch=$(git symbolic-ref --short -q HEAD)
-      if [ $branch == "develop" ]
-      then
-        echo "Branch is indeed develop"
-        echo "Initiating pull"
-        git pull --rebase origin develop
-      else
-        echo "Danger, you're in the wrong branch: $branch"
-      fi
+      echo "Branch is indeed develop"
+      echo "Initiating pull"
+      git pull --rebase origin develop
     else
-      echo "Illegal operation: You're not in a git repo"
+      echo "Danger, you're in the wrong branch: $branch"
     fi
   elif [ $1 == "push_depricated" ]
   then
-    if [ -d .git ]
+    branch=$(git symbolic-ref --short -q HEAD)
+    if [ $branch == "develop" ]
     then
-      branch=$(git symbolic-ref --short -q HEAD)
-      if [ $branch == "develop" ]
-      then
-        echo "Branch is indeed develop"
-        echo "Initiating push"
-        git push origin develop
-      else
-        echo "Danger, you're in the wrong branch: $branch"
-      fi
+      echo "Branch is indeed develop"
+      echo "Initiating push"
+      git push origin develop
     else
-      echo "Illegal operation: You're not in a git repo"
+      echo "Danger, you're in the wrong branch: $branch"
     fi
   elif [ $1 == "fetch" ]
   then
-    if [ -d .git ]
+    branch=$(git symbolic-ref --short -q HEAD)
+    if [ $branch == "develop" ]
     then
-      branch=$(git symbolic-ref --short -q HEAD)
-      if [ $branch == "develop" ]
-      then
-        echo "Danger, you're in the wrong branch: $branch"
-      else
-        echo "Fetching latest changes from develop"
-        git fetch origin develop:develop
-        echo "Updating $branch with latest changes"
-        git rebase develop
-      fi
+      echo "Danger, you're in the wrong branch: $branch"
     else
-      echo "Illegal operation: You're not in a git repo"
+      echo "Fetching latest changes from develop"
+      git fetch origin develop:develop
+      echo "Updating $branch with latest changes"
+      git rebase develop
     fi
+  elif [ $1 == "latest_in_develop" ]
+  then
+    echo "Updating branch develop with latest changes"
+    git fetch origin develop:develop
   elif [ $1 == "pr_update" ]
   then
-    if [ -d .git ]
+    branch=$(git symbolic-ref --short -q HEAD)
+    if [ $branch == "develop" ]
     then
-      branch=$(git symbolic-ref --short -q HEAD)
-      if [ $branch == "develop" ]
-      then
-        echo "Danger, you're in the wrong branch: $branch"
-      elif [ $branch == "master" ]
-      then
-        echo "Danger, you're in the wrong branch: $branch"
-      else
-        echo "Please enter the name of the pull request branch:"
-        read pr_branch
-        if [ $pr_branch == $branch ]
-        then
-          echo "Updating pull request in $branch"
-          git push origin $branch --force-with-lease
-        else
-          echo "Danger, you're PR is in the wrong branch"
-        fi
-      fi
+      echo "Danger, you're in the wrong branch: $branch"
+    elif [ $branch == "master" ]
+    then
+      echo "Danger, you're in the wrong branch: $branch"
     else
-      echo "Illegal operation: You're not in a git repo"
+      echo "Please enter the name of the pull request branch:"
+      read pr_branch
+      if [ $pr_branch == $branch ]
+      then
+        echo "Updating pull request in $branch"
+        git push origin $branch --force-with-lease
+      else
+        echo "Danger, you're PR is in the wrong branch"
+      fi
     fi
   else
-    echo "Incorrect command: use pull_depricated/push_depricated/fetch/pr_update"
+    echo "Incorrect parameter provided. Options: pull_depricated | push_depricated | fetch | pr_update | latest_in_develop"
   fi
 }
