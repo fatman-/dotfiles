@@ -130,7 +130,7 @@ s_update() {
 s_gitsync() {
   if [ -z "$1" ]
   then
-    echo "No parameter provided. Options: pull_depricated | push_depricated | fetch | pr_update | latest"
+    echo "No parameter provided. Options: pull_depricated | push_depricated | fetch | pr_update | latest_in_develop"
   elif [ ! -d .git ]
   then
     echo "Illegal operation: You're not in a git repo"
