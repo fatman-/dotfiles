@@ -130,7 +130,7 @@ s_update() {
 s_gitsync() {
   if [ -z "$1" ]
   then
-    echo "No parameter provided. Options: pull_depricated | push_depricated | fetch | pr_update | latest_in_develop"
+    echo "No parameter provided. Options: pull_depricated | push_depricated | fetch | pr_update | latest_in_develop | pull_safe"
   elif [ ! -d .git ]
   then
     echo "Illegal operation: You're not in a git repo"
@@ -168,6 +168,10 @@ s_gitsync() {
       echo "Updating $branch with latest changes"
       git rebase develop
     fi
+  elif [ $1 == "pull_safe" ]
+  then
+    echo "Updating current branch safely with latest changes"
+    git pull --ff-only origin $branch:$branch
   elif [ $1 == "latest_in_develop" ]
   then
     echo "Updating branch develop with latest changes"
@@ -193,6 +197,6 @@ s_gitsync() {
       fi
     fi
   else
-    echo "Incorrect parameter provided. Options: pull_depricated | push_depricated | fetch | pr_update | latest_in_develop"
+    echo "Incorrect parameter provided. Options: pull_depricated | push_depricated | fetch | pr_update | latest_in_develop | pull_safe"
   fi
 }
