@@ -179,10 +179,7 @@ s_gitsync() {
   elif [ $1 == "pr_update" ]
   then
     branch=$(git symbolic-ref --short -q HEAD)
-    if [ $branch == "develop" ]
-    then
-      echo "Danger, you're in the wrong branch: $branch"
-    elif [ $branch == "master" ]
+    if [ ($branch == "develop") -o ($branch == "master") ]
     then
       echo "Danger, you're in the wrong branch: $branch"
     else
