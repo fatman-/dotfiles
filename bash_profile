@@ -190,7 +190,7 @@ s_gitsync() {
         echo "Updating pull request in $branch"
         git push origin $branch --force-with-lease
       else
-        echo "Danger, you're PR is in the wrong branch"
+        echo "Danger, your PR is in the wrong branch"
       fi
     fi
   else
