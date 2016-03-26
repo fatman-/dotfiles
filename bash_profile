@@ -171,7 +171,7 @@ s_gitsync() {
   elif [ $1 == "pull_safe" ]
   then
     echo "Updating current branch safely with latest changes"
-    git pull --ff-only origin $branch:$branch
+    git pull --ff-only origin $branch
   elif [ $1 == "latest_in_develop" ]
   then
     echo "Updating branch develop with latest changes"
